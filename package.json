@@ -1,0 +1,17 @@
+{
+  "name": "zkp-sbt",
+  "version": "1.0.0",
+  "description": "Library to issue Private Soul Bound Token and verify it on-chain with ZKP",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Enrico Bottazzi",
+  "license": "ISC",
+  "dependencies": {
+    "circomlib": "^2.0.3"
+  }
+}
