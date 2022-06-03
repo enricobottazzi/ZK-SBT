@@ -16,6 +16,10 @@
   "author": "Enrico Bottazzi",
   "license": "ISC",
   "dependencies": {
-    "circomlib": "^2.0.3"
+    "circomlib": "^2.0.3",
+    "dotenv": "^16.0.1"
+  },
+  "devDependencies": {
+    "hardhat": "^2.9.7"
   }
 }
