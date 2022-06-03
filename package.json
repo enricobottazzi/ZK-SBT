@@ -1,5 +1,5 @@
 {
-  "name": "zkp-sbt",
+  "name": "zkp-soul-bound-token",
   "version": "1.0.0",
   "description": "Library to issue Private Soul Bound Token and verify it on-chain with ZKP",
   "main": "index.js",
@@ -8,6 +8,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enricobottazzi/zkp-soul-bound-token.git"
   },
   "author": "Enrico Bottazzi",
   "license": "ISC",

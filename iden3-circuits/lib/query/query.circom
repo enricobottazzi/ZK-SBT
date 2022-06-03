@@ -63,4 +63,3 @@ template Query (valueArraySize) {
     out <== mux.out;
 }
 
-
