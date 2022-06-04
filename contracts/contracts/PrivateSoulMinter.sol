@@ -105,7 +105,7 @@ contract PrivateSoulMinter {
     /// @param metaURI The URL to the token metadata
     function mint(address to, string calldata metaURI, bytes32 claimHashMetadata) public payable {
 
-        // require(balanceOf[to] < 1, "You can only have one token associated to your soul");
+        require(balanceOf[to] < 1, "You can only have one token associated to your soul");
 
         unchecked {
             balanceOf[to]++;

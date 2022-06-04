@@ -1,9 +1,9 @@
 pragma circom 2.0.0;
 
-include "query-verification.circom";
+include "check-query.circom";
 include "../../iden3-circuits/lib/utils/claimUtils.circom";
 
-template SbtVerification(valueArraySize) {
+template verifyClaim(valueArraySize) {
 
 signal input claim[8];
 
@@ -31,7 +31,7 @@ signature.pubKeyX <== pubKeyX;
 signature.pubKeyY <== pubKeyY;
 
 // verify query
-component query = queryVerification(valueArraySize);
+component query = checkQuery(valueArraySize);
 for (var i=0; i<8; i++) { query.issuerClaim[i] <== claim[i]; }
 query.claimSchema <== claimSchema;
 query.slotIndex <== slotIndex;

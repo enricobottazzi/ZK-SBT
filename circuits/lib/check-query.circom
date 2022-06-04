@@ -4,7 +4,7 @@ include "../../node_modules/circomlib/circuits/bitify.circom";
 include "../../iden3-circuits/lib/query/query.circom";
 include "../../iden3-circuits/lib/utils/claimUtils.circom";
 
-template queryVerification(valueArraySize) {
+template checkQuery(valueArraySize) {
 
     signal input issuerClaim[8];
     /** Query */

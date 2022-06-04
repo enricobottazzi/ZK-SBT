@@ -1,43 +1,74 @@
-# ZKP-SOUL-BOUND-TOKEN
+# ZKP-Soul-Bound-Token
 
-Library to issue Private Soul Bound Token and verify it on-chain. The library leverages @iden3 go-libraries and circuits.
+Library to issue Private Soul Bound Token and verify it on-chain. 
+The library leverages @iden3 [go-libraries](https://github.com/iden3/go-iden3-core) and @iden3 [circuits](https://github.com/iden3/circuits).
 
-The core data structure to represent the information that wants to be kept private is defined claim. A claim can encompass any type of information about a subject. The Soul Bound Token contains an hash of the signed claim. The owner of the Soul Bound Token can therefore prove information about the claim without revealing it.
+As @Vitalik.eth mentioned [here](https://twitter.com/VitalikButerin/status/1530265766032838656?s=20&t=hNyxz5KEaL1cW5crxj01Rw) "I think the optimal technical solution [to represent identity related information] includes both a chain and off-chain data and ZKPs over both".
 
-The 3 main actors involved in the process are: 
+The proof of concept introduced here is based on this approach. 
 
-- An issuer, attests someone's age and issues SBT 
-- An ID holder, who receives a SBT from the issuer
-- A verifier, who opens an airdrop only to 18+ users.  
+## Claim
 
-// ADD illustration here. Specify on-chain and off-chain processes
+The core data structure used to represent identity related information is [Iden3's Claim](https://docs.iden3.io/protocol/claims-structure/)
 
-Process 
+- The information are stored in the claim in a plain format
+- Claims are issued by an issuer to another to attest any information
+- When issued, the issuer signs the claim and pass the signature to the receiver of the claim
+- Claims and claims' signatures live off-chain
 
-A) Design the claim => Add reference to iden3 to design the claim. Explain which type of claim I used here
-B) Sign the claim => Explain the key used and why.
-C) Deploy NFT contract and transfer it. Create the NFT that includes an hash of the signature in it. Note: the hash of the signature is generated as keccak-256 hash of "sigR8x" + "." + "sigR8y" + "." + "sigS"
-D) Generate the input for the circuits. Add go files for that
-E) Deploy verifier, explain where it comes from
-F) Deploy Airdrop contract, explain its rules. Remember that if you want to modify the requirement you should modify the require included in the airdrop contract too!
-G)  
+This example considers an elementary claims that attests someone's age: `ageClaim`
 
+## SoulBound Token
 
+The data structure used to represent a claim on-chain is a Non Transferable ERC721 [`PrivateSoulMinter`](./contracts/contracts/PrivateSoulMinter.sol)
 
-### Circuits
+- The SBT contains an hash of the signed claim. This is the only information related to the claim stored on-chain.
+- The SBT is minted by the issuer smart contract to the claim receiver 
 
-### Contracts
+## ZKP Generation and Verification
+
+Smart contracts can make query to someone's claim and verify the query inside a Smart Contract. The query can be "you must be over 18 to interact with my contract". In this example I created a smart contract that gives access to an airdrop only to people that prove being over 18 [`PrivateOver18Airdrop`](./contracts/contracts/PrivateOver18Airdrop.sol).
+
+The SBT owner starting from the signed claim and the verifier's query can generate a proof that includes:
+
+- The information contained inside a claim satisfies verifier's query
+- The claim was signed by issuer's key
+
+The proof is generated using the [`verify-claim`](./circuits/lib/verify-claim.circom) 
+circuit.
+
+The proof is then verified inside the smart contract against the hashed signed inside the SBT. The verifier smart contract does not have access to the information stored inside the claim. The verifier smart contract can apply further on-chain logic after the proof is verified.
+
+![PrivateSBT](imgs/PrivateSBT.png "PrivateSBT")
 
 ### Scripts
 
-- to compile the circuit: bash scripts/compile-circuit.sh circuits/sbt-query.circom powersOfTau28_hez_final_15.ptau 
+A) Compile the circuit 
+
+``` bash
+bash scripts/compile-circuit.sh circuits/verify.circom powersOfTau28_hez_final_15.ptau
+```
+
+B) Issue, sign the claim, define the query in order to generate the input for the circuit. 
+
+
+B) Deploy the smart contracts
+C) Mint a SBT that includes an hash of the signature of the claim to the claim's receiver
+D) Starting from the query, generate the proof expressed in solidity calldata
+
+bash scripts/generate.sh verify
+E) Verify the proof on-chain
+
+
+
+- to compile the circuit: bash scripts/compile-circuit.sh circuits/verify.circom powersOfTau28_hez_final_15.ptau 
 - add input.json to build/sbt-query/sbt-query_js
-- bash scripts/generate.sh sbt-query
+- 
 - to export solidity calldata snarkjs zkey export soliditycalldata public.json proof.json
 
 ### Test
 
-### Design choices
+### Other Design choices
 
 - This library uses babyjubjub signature schema. This schema is more zkp friendly and require far less computation to verify signature inside a circuit. Theoretically, ECDSA schema are already usable inside circuit but the proof generation currently requires a device with 56GB RAM (link to 0xParc Library).
 - Iden3's claim schema is much more expandable and can include more complex data information (up to 4 data slots) and features such as expiration and revocation
@@ -48,12 +79,6 @@ G)
 
 ### To-do
 
-- Create a NFT with hash (done!)
 - Export solidity calldata add it inside the script
-- Add on-chain verification with query
-- Add off-zkp more verification inside the contract 
-    - Hash in the NFT has to be equal to the hash of the signature.
-- Make the verifyProof function non public! 
-- Why the value array has to be that long?
-- Delete Power of TAU file. => Make it downloadable
-- ADD Require in soulminter contract
+- Better specify the query
+- Add reference to the age claim
