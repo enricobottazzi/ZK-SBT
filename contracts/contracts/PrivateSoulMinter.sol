@@ -32,7 +32,7 @@ contract PrivateSoulMinter {
     mapping(uint256 => string) public tokenURI;
 
     /// @notice Get the hash of the claim metadata for a certain tokenID
-    mapping(uint256 => string) public claimSignatureHash;
+    mapping(uint256 => bytes32) public claimSignatureHash;
 
     /// @notice Get the owner of a certain tokenID
     mapping(uint256 => address) public ownerOf;
@@ -103,7 +103,10 @@ contract PrivateSoulMinter {
     /// @notice Mint a new Soulbound NFT to `to`
     /// @param to The recipient of the NFT
     /// @param metaURI The URL to the token metadata
-    function mint(address to, string calldata metaURI, string calldata claimHashMetadata) public payable {
+    function mint(address to, string calldata metaURI, bytes32 claimHashMetadata) public payable {
+
+        // require(balanceOf[to] < 1, "You can only have one token associated to your soul");
+
         unchecked {
             balanceOf[to]++;
         }

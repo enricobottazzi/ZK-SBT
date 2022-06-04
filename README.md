@@ -44,14 +44,16 @@ G)
 - Non ready for production 
 - Use ERC-4973 incoming, 
 - Expand the smart contract
+- No need to add a nullified as the proof Cannot be reused  
 
 ### To-do
 
 - Create a NFT with hash (done!)
 - Export solidity calldata add it inside the script
 - Add on-chain verification with query
-- Add nullifier
 - Add off-zkp more verification inside the contract 
     - Hash in the NFT has to be equal to the hash of the signature.
 - Make the verifyProof function non public! 
 - Why the value array has to be that long?
+- Delete Power of TAU file. => Make it downloadable
+- ADD Require in soulminter contract
