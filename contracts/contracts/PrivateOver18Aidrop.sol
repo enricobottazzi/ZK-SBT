@@ -47,10 +47,10 @@ contract PrivateOver18Airdrop {
         // @dev check if the public input used to generate the proof are legit
         require(privateSoulMinter.ownerOf(_tokenID) == msg.sender,"This token belongs to another soul");
         require(privateSoulMinter.claimSignatureHash(_tokenID) == keccak256(abi.encodePacked(input[0], input[1], input[2])), "The signature is not valid");
-        require(input[3] == 0x152f5044240ef872cf7e6742fe202b9e07ed6188e9e734c09b06939704852358 && input[4] == 0x2865441cd3e276643c84e55004ad259dff282c8c47c6e8c151afacdadf6f6db3, "The claim was signed by a wrong public key");
+        require(input[3] == 0x0ed6ef161e0d95bd87332a72b04a3f7b214daca4b7264523a61e26099f71b4d1 && input[4] == 0x02b2c0abed208352f2c9353c428505fb13b9191cf32e2f1ecac4fa3a3e39c466, "The claim was signed by a wrong public key");
         require(input[5] == 0x0000000000000000000000000000000087b9b4c689c2024c54d1bf962cb16bce, "Wrong Claim schema used to generate the proof");
         require(input[6] == 0x0000000000000000000000000000000000000000000000000000000000000002, "Invalid slot index used to generate the proof");
-        require(input[7] == 0x0000000000000000000000000000000000000000000000000000000000000002, "Invalid operator used to generate the proof");
+        require(input[7] == 0x0000000000000000000000000000000000000000000000000000000000000003, "Invalid operator used to generate the proof");
         require(input[8] == 0x0000000000000000000000000000000000000000000000000000000000000012, "Invalid threshold value used to generate the proof");
 
         require(

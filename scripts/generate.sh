@@ -11,6 +11,8 @@ generate_proof() {
   snarkjs groth16 prove $CIRCUIT/circuit_final.zkey $CIRCUIT_JS/witness.wtns $CIRCUIT_JS/proof.json $CIRCUIT_JS/public.json
 
   snarkjs groth16 verify $CIRCUIT/verification_key.json $CIRCUIT_JS/public.json $CIRCUIT_JS/proof.json
+
+  snarkjs zkey export soliditycalldata $CIRCUIT_JS/public.json $CIRCUIT_JS/proof.json
 }
 
 generate_proof $1

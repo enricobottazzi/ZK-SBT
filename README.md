@@ -51,10 +51,36 @@ bash scripts/compile-circuit.sh circuits/verify.circom powersOfTau28_hez_final_1
 
 B) Issue, sign the claim, define the query in order to generate the input for the circuit. 
 
+```bash
+go run scripts/sign-claim-go/signClaim.go
+```
 
-B) Deploy the smart contracts
-C) Mint a SBT that includes an hash of the signature of the claim to the claim's receiver
-D) Starting from the query, generate the proof expressed in solidity calldata
+- copy and paste the result inside a new file calles `input.json` inside `build/verify/verify_js
+
+C) Deploy the smart contracts
+
+// Modify the public inside the verification of the contract to match the private key that signed your contract
+
+cd contracts 
+npm i
+npx hardhat run scripts/deploy.js --network mumbai
+```
+
+D) Mint a SBT that includes an hash of the signature of the claim to the claim's receiver
+
+Change the signature data according to the ones you get inside your input.json file 
+Change the address according to the one you got from the previous tutorial
+Explain it inside the code
+
+```bash
+npx hardhat run scripts/mint.js --network mumbai
+```
+
+F) Generate the ZKP proof in solidity calldata format
+
+
+
+
 
 bash scripts/generate.sh verify
 E) Verify the proof on-chain
