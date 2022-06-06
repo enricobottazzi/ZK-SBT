@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <script type="text/javascript" src="../dist/logplease.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var logger1  = Logger.create('daemon',  { useColors: false });
+      var logger2  = Logger.create('utils');
+      var logger3  = Logger.create('logger3', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
+      var logger4  = Logger.create('logger4', { useLocalTime: true });
+
+      logger1.debug(`This is a log message`);
+      logger1.info(`This is a log message`);
+      logger1.warn(`This is a log message`);
+      logger1.error(`This is a log message`);
+
+      logger2.debug(`This is a log message`);
+      logger2.info(`This is a log message`);
+      logger2.warn(`This is a log message`);
+      logger2.error(`This is a log message`);
+
+      logger3.debug(`This is a log message`);
+      logger3.info(`This is a log message`);
+      logger3.warn(`This is a log message`);
+      logger3.error(`This is a log message`);
+
+      logger4.debug(`This is a log message`);
+      logger4.info(`This is a log message`);
+      logger4.warn(`This is a log message`);
+      logger4.error(`This is a log message`);
+
+      var red     = Logger.create('red', { color: Logger.Colors.Red, showTimestamp: false, showLevel: false });
+      var green   = Logger.create('green', { color: Logger.Colors.Green, showTimestamp: false, showLevel: false });
+      var yellow  = Logger.create('yellow', { color: Logger.Colors.Yellow, showTimestamp: false, showLevel: false });
+      var blue    = Logger.create('blue', { color: Logger.Colors.Blue, showTimestamp: false, showLevel: false });
+      var magenta = Logger.create('magenta', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
+      var cyan    = Logger.create('cyan', { color: Logger.Colors.Cyan, showTimestamp: false, showLevel: false });
+
+      red.debug(`Red log message`);
+      green.debug(`Green log message`);
+      yellow.debug(`Yellow log message`);
+      blue.debug(`Blue log message`);
+      magenta.debug(`Magenta log message`);
+      cyan.debug(`Cyan log message`);
+    </script>
+  </body>
+</html>

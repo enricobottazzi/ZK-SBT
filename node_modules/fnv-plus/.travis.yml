@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+
+sudo: false
+
+notifications:
+  email: false
+
+deploy:
+  provider: npm
+  email: me@traviswebb.com
+  api_key:
+    secure: QXeVd+lgAo6Dilxvq51dHj2n6X2545kU5BUr2xE0xyD7Dozcf1Q08a7FFQq3i3JFNNodh/2/JgrSpyQcPE5Inf4z/VwEmfM/mx/NaiuNyOaeL0ZuTdQ9iyHw1/0N5BcnwL0W5P42ES6Y6MT+z7LxWVUGt2jWtqmiUutk1xd9F9o=
+  on:
+    tags: true
+    repo: tjwebb/fnv-plus
+    all_branches: true

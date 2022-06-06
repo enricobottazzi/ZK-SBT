@@ -135,27 +135,15 @@ class Runner extends EventEmitter {
    * @public
    * @class
    * @param {Suite} suite - Root suite
-   * @param {Object|boolean} [opts] - Options. If `boolean` (deprecated), whether to delay execution of root suite until ready.
+   * @param {Object} [opts] - Settings object
    * @param {boolean} [opts.cleanReferencesAfterRun] - Whether to clean references to test fns and hooks when a suite is done.
    * @param {boolean} [opts.delay] - Whether to delay execution of root suite until ready.
    * @param {boolean} [opts.dryRun] - Whether to report tests without running them.
    * @param {boolean} [opts.failZero] - Whether to fail test run if zero tests encountered.
    */
-  constructor(suite, opts) {
+  constructor(suite, opts = {}) {
     super();
-    if (opts === undefined) {
-      opts = {};
-    }
-    if (typeof opts === 'boolean') {
-      // TODO: remove this
-      require('./errors').deprecate(
-        '"Runner(suite: Suite, delay: boolean)" is deprecated. Use "Runner(suite: Suite, {delay: boolean})" instead.'
-      );
-      this._delay = opts;
-      opts = {};
-    } else {
-      this._delay = opts.delay;
-    }
+
     var self = this;
     this._globals = [];
     this._abort = false;
@@ -1031,7 +1019,9 @@ Runner.prototype._uncaught = function (err) {
  * @public
  * @memberof Runner
  * @param {Function} fn - Callback when finished
- * @param {{files: string[], options: Options}} [opts] - For subclasses
+ * @param {Object} [opts] - For subclasses
+ * @param {string[]} opts.files - Files to run
+ * @param {Options} opts.options - command-line options
  * @returns {Runner} Runner instance.
  */
 Runner.prototype.run = function (fn, opts = {}) {
@@ -1064,7 +1054,7 @@ Runner.prototype.run = function (fn, opts = {}) {
       debug('run(): filtered exclusive Runnables');
     }
     this.state = constants.STATE_RUNNING;
-    if (this._delay) {
+    if (this._opts.delay) {
       this.emit(constants.EVENT_DELAY_END);
       debug('run(): "delay" ended');
     }
@@ -1091,7 +1081,7 @@ Runner.prototype.run = function (fn, opts = {}) {
   this._addEventListener(process, 'uncaughtException', this.uncaught);
   this._addEventListener(process, 'unhandledRejection', this.unhandled);
 
-  if (this._delay) {
+  if (this._opts.delay) {
     // for reporters, I guess.
     // might be nice to debounce some dots while we wait.
     this.emit(constants.EVENT_DELAY_BEGIN, rootSuite);

@@ -78,6 +78,8 @@ The proof is then verified inside the smart contract against the hashed signed i
     bash scripts/compile-circuit.sh circuits/verify.circom powersOfTau28_hez_final_15.ptau
     ```
 
+    Precompile the circuit. Remember if you wanna compile it the verifier.sol is gonna change 
+
 - Issue, sign the claim, define the query in order to generate the input for the circuit. 
 
     ```bash
@@ -116,15 +118,11 @@ The proof is then verified inside the smart contract against the hashed signed i
 
 ### Test
 
-- Circuit related test 
-
-    Test another input.json. That doesn't work inside the circuit using circom tester
+- Circuit related test `mocha` to test the circuit
 
 - Contract related test
 
-    Test on non transferability of the token.
-    Test that the proof is not reusable
-    Test that people cannot get more than 1 NFT.
+    npx hardhat test test/contract-test.js
 
 ### Other Design choices
 
@@ -136,5 +134,3 @@ The proof is then verified inside the smart contract against the hashed signed i
 - No need to add a nullified as the proof Cannot be reused  
 
 ### To-do
-
-- Better check details of each contract, like external etc.. what does it mean, View etc…

@@ -1,0 +1,35 @@
+{
+  "name": "@iden3/bigarray",
+  "version": "0.0.2",
+  "description": "Big Array object that allows to handle arrays with a huge number of elements.",
+  "type": "module",
+  "exports": {
+    "import": "./src/bigarray.js",
+    "require": "./build/main.cjs"
+  },
+  "main": "./build/main.cjs",
+  "module": "./src/bigarray.js",
+  "scripts": {
+    "test": "mocha",
+    "build": "rollup -c rollup.cjs.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https:https://github.com/iden3/bigarray"
+  },
+  "keywords": [
+    "bigarray",
+    "node",
+    "nodejs",
+    "memory",
+    "array"
+  ],
+  "author": "Jordi Baylina",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "rollup": "^2.20.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  }
+}

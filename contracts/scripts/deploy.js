@@ -14,8 +14,6 @@ async function main() {
     let VerifierContract = await hre.ethers.getContractFactory("Verifier")
     let verifier = await VerifierContract.deploy()
     console.log(`Verifier contract address: ${verifier.address}`)
-
-    // Deploy Private Over 18 Airdrop contract
     let PrivateOver18AirdropContract = await hre.ethers.getContractFactory("PrivateOver18Airdrop")
     let privateOver18Aidrop = await PrivateOver18AirdropContract.deploy(verifier.address, privateSoulMinter.address)
     console.log(`PrivateOver18Airdrop contract address: ${privateOver18Aidrop.address}`)

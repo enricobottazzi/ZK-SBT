@@ -45,6 +45,7 @@ contract PrivateOver18Airdrop {
 
         // here I need to call the PrivateSoulMinter contract to get the hash metadata
         // @dev check if the public input used to generate the proof are legit
+        require(isElegibleForAirdrop[msg.sender] == false, "You already claimed your airdrop!");
         require(privateSoulMinter.ownerOf(_tokenID) == msg.sender,"This token belongs to another soul");
         require(privateSoulMinter.claimSignatureHash(_tokenID) == keccak256(abi.encodePacked(input[0], input[1], input[2])), "The signature is not valid");
         require(input[3] == 0x152f5044240ef872cf7e6742fe202b9e07ed6188e9e734c09b06939704852358 && input[4] == 0x2865441cd3e276643c84e55004ad259dff282c8c47c6e8c151afacdadf6f6db3, "The claim was signed by a wrong public key");

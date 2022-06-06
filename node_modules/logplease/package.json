@@ -1,0 +1,42 @@
+{
+  "name": "logplease",
+  "version": "1.2.15",
+  "description": "Simple Javascript logger for Node.js and Browsers",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha",
+    "example": "node example/example.js",
+    "build": "npm run build:dist && npm run build:examples && npm run build:es5",
+    "build:dist": "./node_modules/.bin/webpack --config webpack.config.js",
+    "build:examples": "./node_modules/.bin/webpack --config webpack.example.config.js",
+    "build:es5": "babel -o ./es5/index.js --presets babel-preset-es2015 --plugins babel-plugin-transform-runtime ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haadcode/logplease.git"
+  },
+  "browser": {
+    "fs": false
+  },
+  "keywords": [
+    "log",
+    "logger",
+    "logging"
+  ],
+  "author": "Haad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/haadcode/logplease/issues"
+  },
+  "homepage": "https://github.com/haadcode/logplease#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "buffer": "^5.0.7",
+    "mocha": "^5.2.0",
+    "webpack": "^3.5.5"
+  }
+}
