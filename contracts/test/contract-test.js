@@ -30,7 +30,7 @@ describe("SBT minting and verification", function () {
     let sigS  = "339273884829908499315499470612334526171037569413339691177061986410380854479"    
 
     // mint the NFT to the collector
-    metaURI = "ipfs...."
+    metaURI = "https://bafybeibodo3cnumo76lzdf2dlatuoxtxahgowxuihwiqeyka7k2qt7eupy.ipfs.nftstorage.link/"
     claimHashMetadata = hre.ethers.utils.solidityKeccak256(["uint", "uint", "uint"], [sigR8x, sigR8y, sigS])
 
     let tx = await privateSoulMinter.mint(collectorAddress, metaURI,claimHashMetadata);

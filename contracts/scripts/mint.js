@@ -13,7 +13,7 @@ async function main() {
     let soulminter_ADDR = "0x042Bd0a598cE518312988B63f708546B117Cb6b8"; // To add
     let privateSoulMinter = await hre.ethers.getContractAt("PrivateSoulMinter", soulminter_ADDR)
     let to = collector
-    let metaURI = "ipfs...."
+    let metaURI = "https://bafybeibodo3cnumo76lzdf2dlatuoxtxahgowxuihwiqeyka7k2qt7eupy.ipfs.nftstorage.link/"
     let claimHashMetadata = ethers.utils.solidityKeccak256(["uint", "uint", "uint"], [sigR8x, sigR8y, sigS])
     let tx = await privateSoulMinter.mint(to, metaURI,claimHashMetadata);
     let receipt = await tx.wait();

@@ -78,6 +78,8 @@ The proof is then verified inside the smart contract against the hashed signed i
     bash scripts/compile-circuit.sh circuits/verify.circom powersOfTau28_hez_final_15.ptau
     ```
 
+    You need POTAU
+
     Precompile the circuit. Remember if you wanna compile it the verifier.sol is gonna change 
 
 - Issue, sign the claim, define the query in order to generate the input for the circuit. 
