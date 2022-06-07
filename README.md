@@ -72,35 +72,22 @@ The proof is then verified inside the smart contract against the hashed signed i
 
 ### Scripts
 
-- Compile the circuit 
-
-    ``` bash
-    bash scripts/compile-circuit.sh circuits/verify.circom powersOfTau28_hez_final_15.ptau
-    ```
-
-    You need POTAU
-
-    Precompile the circuit. Remember if you wanna compile it the verifier.sol is gonna change 
+The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`trusted set-up. 
 
 - Issue, sign the claim, define the query in order to generate the input for the circuit. 
 
     ```bash
-    go run scripts/sign-claim-go/signClaim.go
+    go run scripts/signClaim.go
     ```
     copy and paste the result inside a new file called `input.json` inside `build/verify/verify_js`
 
 - Deploy the smart contracts
 
     ```
-    cd contracts
     npx hardhat run scripts/deploy.js --network mumbai
     ```
 
 -  Mint a SBT that includes an hash of the signature of the claim to the claim's receiver
-
-    Change the signature data according to the ones you get inside your input.json file 
-    Change the address according to the one you got from the previous tutorial
-    Explain it inside the code
 
     ```bash
     npx hardhat run scripts/mint.js --network mumbai
@@ -112,6 +99,8 @@ The proof is then verified inside the smart contract against the hashed signed i
     bash scripts/generate.sh verify
     ````
 
+    The output you get from this command represent the solidity calldata needed to verify the proof
+
 - Verify the proof on-chain
 
     ```bash
@@ -120,11 +109,7 @@ The proof is then verified inside the smart contract against the hashed signed i
 
 ### Test
 
-- Circuit related test `mocha` to test the circuit
-
-- Contract related test
-
-    npx hardhat test test/contract-test.js
+`mocha` to test the contract and the circuit
 
 ### Other Design choices
 
@@ -134,5 +119,3 @@ The proof is then verified inside the smart contract against the hashed signed i
 - Use ERC-4973 incoming, 
 - Expand the smart contract 
 - No need to add a nullified as the proof Cannot be reused  
-
-### To-do
