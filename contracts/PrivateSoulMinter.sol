@@ -4,12 +4,13 @@ pragma solidity ^0.8.11;
 
 /// @title PrivateSoulMinter
 /// @author Enrico Bottazzi
-/// @notice Barebones contract to mint Private Soulbound NFTs
+/// @notice Barebones contract to mint ZK SBT
+
 contract PrivateSoulMinter {
     /// @notice Thrown when trying to transfer a Soulbound token
     error Soulbound();
 
-    /// @notice Emitted when minting a Soulbound NFT
+    /// @notice Emitted when minting a ZK SBT
     /// @param from Who the token comes from. Will always be address(0)
     /// @param to The token recipient
     /// @param id The ID of the minted token
