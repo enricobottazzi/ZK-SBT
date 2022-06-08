@@ -1,11 +1,20 @@
 # ZKP-Soul-Bound-Token
 
-Library to issue Private Soul Bound Token and verify it on-chain. 
-The library leverages @iden3 [go-libraries](https://github.com/iden3/go-iden3-core) and @iden3 [circuits](https://github.com/iden3/circuits).
+One of the major concerns with SBTs presented in the Decentralized Society paper from Glen Wely, Puja Ohlhaver, and Vitalik Buterin has been the assumption that SBTs contain public data on-chain. This assumption has stirred a lot of debate in the Web3 community with what technical substrate to be leveraging in order to represent the key outcomes from the Decentralized Society paper (Verifiable Credentials or assumed technical specs of an SBT). 
 
-As @Vitalik.eth mentioned [here](https://twitter.com/VitalikButerin/status/1530265766032838656?s=20&t=hNyxz5KEaL1cW5crxj01Rw) "I think the optimal technical solution [to represent identity related information] includes both a chain and off-chain data and ZKPs over both".
+As Vitalik Buterin has mentioned [publicly](https://twitter.com/VitalikButerin/status/1530265766032838656?s=20&t=hNyxz5KEaL1cW5crxj01Rw) "I think the optimal technical solution [to represent identity related information] includes both a chain and off-chain data and ZKPs over both". Not only Vitalik, but many thought leaders in the VC and Web3 native communities have agreed that the solution is not binary, but a pluralistic one. 
 
-ZKP Soul Bound Token allows for the creation of a composable network of trust. The token is always visible on chain making impossible for a user to hide the existance of an information when requested. The information contained in the claim is obscured using ZKP in order to guarantee privacy. The only thing stored on chain is the hash a signed message.
+The key design considerations we took included: portability; provisioned privacy; efficient storage; and composability with Web3 developers. 
+
+In this repository, we provide the tools needed to ensure that: 
+
+- Identity holders are able to protect the contents of their data with the same privacy guarantees of verifiable credentials
+- Identity holders are able to participate in the on-chain composable logic that the Web3 infrastructure is built on.
+- Identity holders can provision access to data and control over data storage.
+
+In this library developers are provided with the tooling to issue zero-knowledge proof soul bound tokens (ZK SBTs) and verify them on-chain. This library leverages @iden3 [go-libraries](https://github.com/iden3/go-iden3-core) and @iden3 [circuits](https://github.com/iden3/circuits).
+
+ZKP SBTs allows for the creation of a composable network of trust. The token is always visible on chain making impossible for a user to hide the existance of an information when requested. The information contained in the claim is obscured using ZKP in order to guarantee privacy. The only thing stored on chain is the hash of a signed message.
 
 The proof of concept introduced here is based on this approach. 
 
@@ -15,9 +24,9 @@ The proof of concept introduced here is based on this approach.
 
 The core data structure used to represent identity related information is [Iden3's Claim](https://docs.iden3.io/protocol/claims-structure/)
 
-- The information are stored in the claim in a plain format
-- Claims are issued by an issuer to another to attest any information
-- When issued, the issuer signs the claim and pass the signature to the receiver of the claim
+- The information stored in the claim is in a plain text format
+- Claims are issued by an issuer to attest to information
+- When issued, the issuer signs the claim and passes the signature to the receiver of the claim
 - Claims and claims' signatures live off-chain
 
 This example considers an elementary claims that attests someone's age: `ageClaim`
@@ -42,14 +51,16 @@ Value:
 
 ### SoulBound Token
 
-The data structure used to represent a claim on-chain is a Non Transferable ERC721 [`PrivateSoulMinter`](./contracts/contracts/PrivateSoulMinter.sol)
+The data structure used to represent a claim on-chain is a non-transferable ERC721 [`PrivateSoulMinter`](./contracts/contracts/PrivateSoulMinter.sol)
 
-- The SBT contains an hash of the signed claim. This is the only information related to the claim stored on-chain.
-- The SBT is minted by the issuer smart contract to the claim receiver 
+- The ZK SBT contains an hash of the signed claim. This is the only information related to the claim stored on-chain.
+- The ZK SBT is minted by the issuer smart contract to the claim receiver 
 
 ### ZKP Generation and Verification
 
-Smart contracts can make query to someone's claim and verify the query inside a Smart Contract. The query can be "you must be over 18 to interact with my contract". In this example I created a smart contract that gives access to an airdrop only to people that prove being over 18 [`PrivateOver18Airdrop`](./contracts/contracts/PrivateOver18Airdrop.sol).
+Smart contracts can make query to someone's claim and verify the query inside a Smart Contract. The query can be "you must be over 18 to interact with my contract". 
+
+In this example, the smart contract that gives access to an airdrop only to people that prove being over 18 [`PrivateOver18Airdrop`](./contracts/contracts/PrivateOver18Airdrop.sol).
 
 The query, on a elementary level, looks like this: 
 
@@ -59,14 +70,14 @@ The query, on a elementary level, looks like this:
     Operator:  3,  // 3 means "greater than"
 ```
 
-The SBT owner starting from the signed claim and the verifier's query can generate a proof that includes:
+The ZK SBT owner starting from the signed claim and the verifier's query can generate a proof that includes:
 
 - The information contained inside a claim satisfies verifier's query
 - The claim was signed by issuer's key
 
 The proof is generated using the [`verify-claim`](./circuits/lib/verify-claim.circom) circuit.
 
-The proof is then verified inside the smart contract against the hashed signed inside the SBT. The verifier smart contract does not have access to the information stored inside the claim. The verifier smart contract can apply further on-chain logic after the proof is verified.
+The proof is then verified inside the smart contract against the hashed signed inside the ZK SBT. The verifier smart contract does not have access to the information stored inside the claim. The verifier smart contract can apply further on-chain logic after the proof is verified.
 
 ![PrivateSBT](imgs/PrivateSBT.png "PrivateSBT")
 
@@ -115,7 +126,4 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
 
 - This library uses babyjubjub signature schema. This schema is more zkp friendly and require far less computation to verify signature inside a circuit. Theoretically, ECDSA schema are already usable inside circuit but the proof generation currently requires a device with 56GB RAM (link to 0xParc Library).
 - Iden3's claim schema is much more expandable and can include more complex data information (up to 4 data slots) and features such as expiration, revocation or self attestation
-- Non ready for production 
-- Use ERC-4973 incoming, 
-- Expand the smart contract 
 - No need to add a nullified as the proof Cannot be reused  
