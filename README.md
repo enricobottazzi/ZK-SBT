@@ -81,11 +81,11 @@ The proof is generated using the [`verify-claim`](./circuits/lib/verify-claim.ci
 
 The proof is then verified inside the smart contract against the hashed signed inside the ZK SBT. The verifier smart contract does not have access to the information stored inside the claim. The verifier smart contract can apply further on-chain logic after the proof is verified.
 
-![PrivateSBT](imgs/PrivateSBT.png "PrivateSBT")
+![PrivateSBT](imgs/onchain-offchain.png "PrivateSBT")
 
 ### Scripts
 
-The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`trusted set-up. 
+The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`trusted set-up.
 
 - Issue, sign the claim, define the query in order to generate the input for the circuit. 
 
