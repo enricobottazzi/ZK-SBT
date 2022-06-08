@@ -1,4 +1,4 @@
-# ZKP-Soul-Bound-Token
+# ZK-Soul-Bound-Token
 
 One of the major concerns with SBTs presented in the Decentralized Society paper from Glen Wely, Puja Ohlhaver, and Vitalik Buterin has been the assumption that SBTs contain public data on-chain. This assumption has stirred a lot of debate in the Web3 community with what technical substrate to be leveraging in order to represent the key outcomes from the Decentralized Society paper (Verifiable Credentials or assumed technical specs of an SBT). 
 
@@ -14,7 +14,7 @@ In this repository, we provide the tools needed to ensure that:
 
 In this library developers are provided with the tooling to issue zero-knowledge proof soul bound tokens (ZK SBTs) and verify them on-chain. This library leverages @iden3 [go-libraries](https://github.com/iden3/go-iden3-core) and @iden3 [circuits](https://github.com/iden3/circuits).
 
-ZKP SBTs allows for the creation of a composable network of trust. The token is always visible on chain making impossible for a user to hide the existance of an information when requested. The information contained in the claim is obscured using ZKP in order to guarantee privacy. The only thing stored on chain is the hash of a signed message.
+ZK SBTs allows for the creation of a composable network of trust. The token is always visible on chain making impossible for a user to hide the existance of an information when requested. The information contained in the claim is obscured using ZK in order to guarantee privacy. The only thing stored on chain is the hash of a signed message.
 
 The proof of concept introduced here is based on this approach. 
 
