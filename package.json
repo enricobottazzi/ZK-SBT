@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/enricobottazzi/zkp-soul-bound-token.git"
+    "url": "git+https://github.com/enricobottazzi/ZK-SBT.git"
   },
   "author": "Enrico Bottazzi",
   "license": "ISC",
