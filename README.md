@@ -1,4 +1,4 @@
-# ZK-Soul-Bound-Token
+# Zero-Knowleedge Soul-Bound-Token (ZK SBT)
 
 One of the major concerns with SBTs presented in the Decentralized Society paper from Glen Wely, Puja Ohlhaver, and Vitalik Buterin has been the assumption that SBTs contain public data on-chain. This assumption has stirred a lot of debate in the Web3 community with what technical substrate to be leveraging in order to represent the key outcomes from the Decentralized Society paper (Verifiable Credentials or assumed technical specs of an SBT). 
 
