@@ -12,7 +12,7 @@ In this repository, we provide the tools needed to ensure that:
 - Identity holders are able to participate in the on-chain composable logic that the Web3 infrastructure is built on.
 - Identity holders can provision access to data and control over data storage.
 
-In this library developers are provided with the tooling to issue zero-knowledge proof soul bound tokens (ZK SBTs) and verify them on-chain. This library leverages @iden3 [go-libraries](https://github.com/iden3/go-iden3-core) and @iden3 [circuits](https://github.com/iden3/circuits).
+In this library developers are provided with the tooling to issue zero-knowledge proof soul bound tokens (ZK SBTs) and verify them on-chain. This library leverages [Iden3 go-libraries](https://github.com/iden3/go-iden3-core) and [Iden3 circuits](https://github.com/iden3/circuits).
 
 ZK SBTs allows for the creation of a composable network of trust. The token is always visible on chain making impossible for a user to hide the existance of an information when requested. The information contained in the claim is obscured using ZK in order to guarantee privacy. The only thing stored on chain is the hash of a signed message.
 
@@ -126,6 +126,5 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
 
 ### Other Design choices
 
-- This library uses babyjubjub signature schema. This schema is more zkp friendly and require far less computation to verify signature inside a circuit. Theoretically, ECDSA schema are already usable inside circuit but the proof generation currently requires a device with 56GB RAM (link to 0xParc Library).
-- Iden3's claim schema is much more expandable and can include more complex data information (up to 4 data slots) and features such as expiration, revocation or self attestation
-- No need to add a nullified as the proof Cannot be reused  
+- This library uses babyjubjub signature schema. This schema is more zkp friendly and require far less computation to verify signature inside a circuit. Theoretically, ECDSA schema are already usable inside circuit [0xParc - circom-ecdsa](https://github.com/0xPARC/circom-ecdsa) but the proof generation currently requires a device with 56GB RAM.
+- [Iden3's claim schema](https://iden3.github.io/docs-temp-public-tutorials/) is much more expandable and can include more complex data information (up to 4 data slots) and features such as expiration, revocation or self attestation
