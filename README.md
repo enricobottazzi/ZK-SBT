@@ -18,6 +18,8 @@ ZK SBTs allows for the creation of a composable network of trust. The token is a
 
 The proof of concept introduced here is based on this approach. 
 
+Core Team: [Enrico Bottazzi](https://twitter.com/backaes) + [Shrey Jain](https://twitter.com/shreyjaineth).
+
 # Core Components
 
 ### Claim
