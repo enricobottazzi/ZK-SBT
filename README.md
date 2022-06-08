@@ -53,7 +53,7 @@ Value:
 
 ### SoulBound Token
 
-The data structure used to represent a claim on-chain is a non-transferable ERC721 [`PrivateSoulMinter`](./contracts/contracts/PrivateSoulMinter.sol)
+The data structure used to represent a claim on-chain is a non-transferable ERC721 [`PrivateSoulMinter`](./contracts/PrivateSoulMinter.sol)
 
 - The ZK SBT contains an hash of the signed claim. This is the only information related to the claim stored on-chain.
 - The ZK SBT is minted by the issuer smart contract to the claim receiver 
@@ -62,7 +62,7 @@ The data structure used to represent a claim on-chain is a non-transferable ERC7
 
 Smart contracts can make query to someone's claim and verify the query inside a Smart Contract. The query can be "you must be over 18 to interact with my contract". 
 
-In this example, the smart contract that gives access to an airdrop only to people that prove being over 18 [`PrivateOver18Airdrop`](./contracts/contracts/PrivateOver18Airdrop.sol).
+In this example, the smart contract that gives access to an airdrop only to people that prove being over 18 [`PrivateOver18Airdrop`](./contracts/PrivateOver18Airdrop.sol).
 
 The query, on a elementary level, looks like this: 
 
