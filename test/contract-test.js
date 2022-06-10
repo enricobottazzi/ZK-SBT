@@ -43,8 +43,12 @@ describe("SBT minting and verification", function () {
     await expect(privateSoulMinter.connect(collector).transferFrom(collectorAddress, signers[2].address, tokenId)).to.be.reverted;
   });
 
-  it("a user cannot have more than 1 SBT attesting their age", async function () {
+  it("shouldn't allow accounts that are not contract owner to mint SBTs", async function () {
     await expect(privateSoulMinter.mint(collectorAddress, metaURI, claimHashMetadata)).to.be.revertedWith("You can only have one token associated to your soul");
+  });
+
+  it("a user cannot have more than 1 SBT attesting their age", async function () {
+    await expect(privateSoulMinter.connect(collector).mint(collectorAddress, metaURI, claimHashMetadata)).to.be.revertedWith("Ownable: caller is not the owner");
   });
 
   it("should include the user in the aidrop after presenting a correct proof", async function () {
@@ -60,6 +64,7 @@ describe("SBT minting and verification", function () {
     assert.equal(await privateOver18Aidrop.isElegibleForAirdrop(collectorAddress), true);
 
   });
+
 
   it("should revert if a user presents the same proof twice", async function () {
     

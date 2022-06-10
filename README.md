@@ -1,6 +1,6 @@
 # Zero-Knowledge Soul-Bound-Token (ZK SBT)
 
-One of the major concerns with SBTs presented in the Decentralized Society paper from Glen Wely, Puja Ohlhaver, and Vitalik Buterin has been the assumption that SBTs contain public data on-chain. This assumption has stirred a lot of debate in the Web3 community with what technical substrate to be leveraging in order to represent the key outcomes from the Decentralized Society paper (Verifiable Credentials or assumed technical specs of an SBT). 
+One of the major concerns with SBTs presented in the Decentralized Society [paper](https://vitalik.ca/general/2022/01/26/soulbound.html) (Glen Wely, Puja Ohlhaver, and Vitalik Buterin) and [article](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763) (Vitalik Buterin) has been the assumption that SBTs contain public data on-chain. This assumption has stirred a lot of debate in the Web3 community with what technical substrate to be leveraging in order to represent the key outcomes from the Decentralized Society paper (Verifiable Credentials or assumed technical specs of an SBT).  
 
 As Vitalik Buterin has mentioned [publicly](https://twitter.com/VitalikButerin/status/1530265766032838656?s=20&t=hNyxz5KEaL1cW5crxj01Rw) "I think the optimal technical solution [to represent identity related information] includes both a chain and off-chain data and ZKPs over both". Not only Vitalik, but many thought leaders in the VC and Web3 native communities have agreed that the solution is not binary, but a pluralistic one. 
 
@@ -19,6 +19,8 @@ ZK SBTs allows for the creation of a composable network of trust. The token is a
 The proof of concept introduced here is based on this approach. 
 
 Core Team: [Enrico Bottazzi](https://twitter.com/backaes) + [Shrey Jain](https://twitter.com/shreyjaineth).
+
+The repository is not production ready and shouldn't be used anywhere apart from testnets.ß
 
 # Core Components
 

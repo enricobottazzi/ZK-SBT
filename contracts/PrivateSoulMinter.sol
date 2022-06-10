@@ -2,11 +2,13 @@
 pragma solidity ^0.8.11;
 // Credit to @Miguel Piedrafita for the SoulBound NFT contract skeleton
 
+import "@openzeppelin/contracts/access/Ownable.sol";
+
 /// @title PrivateSoulMinter
 /// @author Enrico Bottazzi
 /// @notice Barebones contract to mint ZK SBT
 
-contract PrivateSoulMinter {
+contract PrivateSoulMinter is Ownable{
     /// @notice Thrown when trying to transfer a Soulbound token
     error Soulbound();
 
@@ -25,9 +27,6 @@ contract PrivateSoulMinter {
 
     /// @notice The name for the token
     string public constant name = "Soulbound NFT";
-
-    /// @notice The owner of this contract (set to the deployer)
-    address public immutable owner = msg.sender;
 
     /// @notice Get the metadata URI for a certain tokenID
     mapping(uint256 => string) public tokenURI;
@@ -104,7 +103,7 @@ contract PrivateSoulMinter {
     /// @notice Mint a new Soulbound NFT to `to`
     /// @param to The recipient of the NFT
     /// @param metaURI The URL to the token metadata
-    function mint(address to, string calldata metaURI, bytes32 claimHashMetadata) public payable {
+    function mint(address to, string calldata metaURI, bytes32 claimHashMetadata) public onlyOwner {
 
         require(balanceOf[to] < 1, "You can only have one token associated to your soul");
 
