@@ -8,10 +8,10 @@ async function main() {
     let collector = singers[1].address;
 
     // fetch signature data from input.json
-    let sigR8x = "//"
-    let sigR8y = "//"
-    let sigS  = "//"    
-    let soulminter_ADDR = "//"; // To add
+    let sigR8x = ""
+    let sigR8y = ""
+    let sigS  = ""    
+    let soulminter_ADDR = ""; // To add
     let privateSoulMinter = await hre.ethers.getContractAt("PrivateSoulMinter", soulminter_ADDR)
     let to = collector
     let metaURI = "https://bafybeibodo3cnumo76lzdf2dlatuoxtxahgowxuihwiqeyka7k2qt7eupy.ipfs.nftstorage.link/"

@@ -20,7 +20,7 @@ The proof of concept introduced here is based on this approach.
 
 Core Team: [Enrico Bottazzi](https://twitter.com/backaes) + [Shrey Jain](https://twitter.com/shreyjaineth).
 
-The repository is not production ready and shouldn't be used anywhere apart from testnets.ß
+The repository is not production ready and should be used only for testnet experiments.
 
 # Core Components
 
@@ -48,7 +48,7 @@ Value:
 { 
     "0",
     "0",
-    "0", // first value data slot
+    "328613907243889777235018884535160632327", // first value data slot <- rand value to avoid rainbow attacks
     "0"  // second value data slot
 }   
 ```

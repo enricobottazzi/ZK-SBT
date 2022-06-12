@@ -6,14 +6,14 @@ async function main() {
     let singers = await hre.ethers.getSigners();
     let collector = singers[1];
     
-    let PRIVATAIDROP_ADDR = "//"; // to add
+    let PRIVATAIDROP_ADDR = ""; // to add
 
     // A[2] B[[2][2]] C[2] represent the proof
-    let a = ["//", "//"]
-    let b = [["//", "//"],["//", "//"]]
-    let c = ["//", "//"]
+    let a = ["", ""]
+    let b = [["", ""],["", ""]]
+    let c = ["", ""]
     // input[72] represents the public input of the circuit
-    let input = [""]
+    let input = [""] 
     let tokenID = "1"; // to add
 
     let privateOver18Aidrop = await hre.ethers.getContractAt("PrivateOver18Airdrop", PRIVATAIDROP_ADDR)
@@ -28,10 +28,6 @@ main().then(() => process.exit(0))
         console.error(e);
         process.exit(-1);
     })
-
-
-
-
     
     
 

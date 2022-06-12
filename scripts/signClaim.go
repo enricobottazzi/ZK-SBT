@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -43,6 +44,10 @@ func main() {
 	// issue claim for user adding 25 in the data slot for age
 	dataSlotA, _ := core.NewElemBytesFromInt(big.NewInt(25))
 
+	// add a random nonce to avoid rainbow attacks
+	RandomInt, _ := rand.Prime(rand.Reader, 128)
+	dataSlotC, _ := core.NewElemBytesFromInt(RandomInt)
+
 	var schemaHash core.SchemaHash
 
 	// Add the schema hash for age claim standard
@@ -52,7 +57,8 @@ func main() {
 
 	ageClaim, _ := core.NewClaim(
 		schemaHash,
-		core.WithIndexData(dataSlotA, core.ElemBytes{}))
+		core.WithIndexData(dataSlotA, core.ElemBytes{}),
+		core.WithValueData(dataSlotC, core.ElemBytes{}))
 
 	hashIndex, hashValue, _ := claimsIndexValueHashes(*ageClaim)
 
