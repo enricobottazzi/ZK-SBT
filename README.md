@@ -64,7 +64,7 @@ The data structure used to represent a claim on-chain is a non-transferable ERC7
 
 Smart contracts can make query to someone's claim and verify the query inside a Smart Contract. The query can be "you must be over 18 to interact with my contract". 
 
-In this example, the smart contract that gives access to an airdrop only to people that prove being over 18 [`PrivateOver18Airdrop`](./contracts/PrivateOver18Airdrop.sol).
+In this example, the smart contract that gives access to an airdrop only to people that prove being over 18 [`PrivateOver18Airdrop`](./contracts/PrivateOver18Aidrop.sol).
 
 The query, on a elementary level, looks like this: 
 
