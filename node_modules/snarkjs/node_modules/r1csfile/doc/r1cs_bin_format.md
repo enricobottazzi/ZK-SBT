@@ -30,7 +30,7 @@ $$
 (a_{1,0}w_0 + a_{1,1}w_1 + ... + a_{1,n}w_{n}) &\cdot& (b_{1,0} w_0 + b_{1,1} w_1 + ... + b_{1,n} w_{n}) &-& (c_{1,0} w_0 + c_{1,1}w_1 + ... + c_{1,n}w_{n}) &=& 0 \\
 ...\\
 (a_{m-1,0}w_0 + a_{m-1,1}w_1 + ... + a_{m-1,n}w_{n}) &\cdot& (b_{m-1,0} w_0 + b_{m-1,1} w_1 + ... + b_{m-1,n} w_{n}) &-& (c_{m-1,0} w_0 + c_{m-1,1}w_1 + ... + c_{m-1,n}w_{n}) &=& 0
- \end{array} \right.
+\end{array} \right.
 $$
 
 Wire 0 must be always mapped to label 0 and it's an input forced to value "1" implicitly
@@ -114,11 +114,13 @@ Format: Little-Endian
 
 Type of the section.
 
-Currently there are 3 types of sections defined:
+Currently there are 5 types of sections defined:
 
 * 0x00000001 : Header Section
 * 0x00000002 : Constraint Section
 * 0x00000003 : Wire2LabelId Map Section
+* 0x00000004 : Custom gates List Section [UltraPlonk]
+* 0x00000005 : Custom gates Application Section [UltraPlonk]
 
 If the file contain other types, the format is valid, but they MUST be ignored.
 
@@ -173,7 +175,7 @@ Section Type: 0x01
 Size: 4 bytes
 Format: Little-Endian
 
-Size in bytes of a field element. Mast be a multiple of 8.
+Size in bytes of a field element. Must be a multiple of 8.
 
 Example:
 ```
@@ -371,7 +373,7 @@ $$
 Size: 4 bytes
 Format: Little-Endian
 
-Total number of non Zero factors in the linear compination.
+Total number of non Zero factors in the linear combination.
 
 The factors MUST be sorted in ascending order.
 
@@ -388,7 +390,7 @@ WireId of the nonZero Factor
 
 #### Value of the factor
 
-This is the factor that multiplies the associated wire in the linear convination.
+This is the factor that multiplies the associated wire in the linear combination.
 
 For example, to represent the linear combination:
 
@@ -420,6 +422,83 @@ Section Type: 0x03
 ┃64│ labelId of Wire_0 ┃64│ labelId of Wire_1 ┃ ... ┃64│ labelId of Wire_n ┃
 ┗━━┻━━━━━━━━━━━━━━━━━━━┻━━┻━━━━━━━━━━━━━━━━━━━┛     ┗━━┻━━━━━━━━━━━━━━━━━━━┛
 ````
+
+
+### Custom gates List Section [Plonk]
+
+Section Type: 0x04
+
+````
+     ┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+     ┃ 4  ┃ Number of custom gates M                    ┃
+     ┗━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+     Custom gate 0
+     ┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+     ┃ N  ┃ Custom gate template name                   ┃ Sequence of N 1-byte char ending with 0x0
+     ┣━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+     ┃ 4  ┃ Number of custom gate template parameters K ┃
+     ┣━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+     ┃ 4  ┃ Parameter 0                                 ┃
+     ┃ 4  ┃ Parameter 2                                 ┃
+     ┃ ...                                              ┃
+     ┃ 4  ┃ Parameter K-1                               ┃
+     ┗━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+     ...
+     ...
+     ...
+     Custom gate M-1
+     ┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+     ┃ N  ┃ Custom gate template name                   ┃ Sequence of N 1-byte char ending with 0x0
+     ┣━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+     ┃ 4  ┃ Custom gate template parameters K           ┃
+     ┣━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+     ┃ 4  ┃ Parameter 0                                 ┃
+     ┃ 4  ┃ Parameter 2                                 ┃
+     ┃ ...                                              ┃
+     ┃ 4  ┃ Parameter K-1                               ┃
+     ┗━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+````
+
+Custom gates are identified by the position in the list starting at index 0.
+
+### Custom gates Application Section [Plonk]
+
+Section Type: 0x05
+
+````
+     ┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+     ┃ 4  ┃ Number of Custom gates applications N ┃
+     ┗━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+     Application 0
+     ┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+     ┃ 4  ┃ Custom gate identifier                ┃
+     ┣━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+     ┃ 4  ┃ Number of signals S                   ┃
+     ┣━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+     ┃ 4  ┃ Signal 0                              ┃
+     ┃ 4  ┃ Signal 1                              ┃
+       ...
+     ┃ 4  ┃ Signal S-1                            ┃
+     ┗━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+     ...
+     ...
+     ...
+     Application N-1
+     ┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+     ┃ 4  ┃ Custom gate identifier                ┃
+     ┣━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+     ┃ 4  ┃ Number of signals S                   ┃
+     ┣━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+     ┃ 4  ┃ Signal 0                              ┃
+     ┃ 4  ┃ Signal 1                              ┃
+       ...
+     ┃ 4  ┃ Signal S-1                            ┃
+     ┗━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+````
+
+List of signals are inputs and outputs of the custom gate in the order they appear in the `CIRCOM` definition of the custom gate.
 
 ## Rationale
 
@@ -639,4 +718,3 @@ circom will output this format.
 ## Copyright
 
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
-

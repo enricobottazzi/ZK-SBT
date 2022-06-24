@@ -157,4 +157,33 @@ class MemFile {
         return view[1] * 0x100000000 + view[0];
     }
 
+    async readString(pos) {
+        const self = this;
+
+        let currentPosition = typeof pos == "undefined" ? self.pos : pos;
+
+        if (currentPosition > this.totalSize) {
+            if (this.readOnly) {
+                throw new Error("Reading out of bounds");
+            }
+            this._resizeIfNeeded(pos);
+        }
+        const dataArray = new Uint8Array(
+            self.o.data.buffer,
+            currentPosition,
+            this.totalSize - currentPosition
+        );
+
+        let indexEndOfString = dataArray.findIndex(element => element === 0);
+        let endOfStringFound = indexEndOfString !== -1;
+
+        let str = "";
+        if (endOfStringFound) {
+            str = new TextDecoder().decode(dataArray.slice(0, indexEndOfString));
+            self.pos = currentPosition + indexEndOfString + 1;
+        } else {
+            self.pos = currentPosition;
+        }
+        return str;
+    }
 }

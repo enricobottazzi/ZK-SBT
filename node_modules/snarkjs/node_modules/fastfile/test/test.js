@@ -6,9 +6,6 @@ import * as fastFile from "../src/fastfile.js";
 
 import { Scalar, F1Field } from "ffjavascript";
 
-import tmp from "tmp-promise";
-
-
 const q = Scalar.fromString("21888242871839275222246405745257275088548364400416034343698204186575808495617");
 const F = new F1Field(q);
 
@@ -35,8 +32,6 @@ describe("fastfile test", function () {
     const values = {};
 
     it("should write a big file sequentially", async () => {
-        fileName = await tmp.tmpName();
-
         fileName = "test.bin";
 
         console.log(fileName);

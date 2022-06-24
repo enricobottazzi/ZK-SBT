@@ -7,7 +7,7 @@ export default {
         file: "build/main.cjs",
         format: "cjs",
     },
-    external: ["fs"],
+    external: ["fs", "constants"],
     plugins: [
         resolve({ preferBuiltins: true }),
         commonJS({

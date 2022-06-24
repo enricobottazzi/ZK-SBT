@@ -5,10 +5,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var fs = _interopDefault(require('fs'));
+var constants = require('constants');
 
 async function open(fileName, openFlags, cacheSize, pageSize) {
     cacheSize = cacheSize || 4096*64;
-    if (["w+", "wx+", "r", "ax+", "a+"].indexOf(openFlags) <0)
+    if (typeof openFlags !== "number" && ["w+", "wx+", "r", "ax+", "a+"].indexOf(openFlags) <0)
         throw new Error("Invalid open option");
     const fd =await fs.promises.open(fileName, openFlags);
 
@@ -424,6 +425,56 @@ class FastFile {
         return view[1] * 0x100000000 + view[0];
     }
 
+    async readString(pos) {
+        const self = this;
+
+        if (self.pendingClose) {
+            throw new Error("Reading a closing file");
+        }
+
+        let currentPosition = typeof pos == "undefined" ? self.pos : pos;
+        let currentPage = Math.floor(currentPosition / self.pageSize);
+
+        let endOfStringFound = false;
+        let str = "";
+
+        while (!endOfStringFound) {
+            //Read page
+            let pagePromise = self._loadPage(currentPage);
+            self._triggerLoad();
+            await pagePromise;
+            self.__statusPage("After Await (read): ", currentPage);
+
+            let offsetOnPage = currentPosition % self.pageSize;
+
+            const dataArray = new Uint8Array(
+                self.pages[currentPage].buff.buffer,
+                self.pages[currentPage].buff.byteOffset + offsetOnPage,
+                self.pageSize - offsetOnPage
+            );
+
+            let indexEndOfString = dataArray.findIndex(element => element === 0);
+            endOfStringFound = indexEndOfString !== -1;
+
+            if (endOfStringFound) {
+                str += new TextDecoder().decode(dataArray.slice(0, indexEndOfString));
+                self.pos = currentPage * this.pageSize + offsetOnPage + indexEndOfString + 1;
+            } else {
+                str += new TextDecoder().decode(dataArray);
+                self.pos = currentPage * this.pageSize + offsetOnPage + dataArray.length;
+            }
+
+            self.pages[currentPage].pendingOps--;
+            self.__statusPage("After Op done: ", currentPage);
+
+            currentPosition = self.pos;
+            currentPage++;
+
+            if (self.pendingLoads.length > 0) setImmediate(self._triggerLoad.bind(self));
+        }
+
+        return str;
+    }
 }
 
 function createNew(o) {
@@ -585,6 +636,35 @@ class MemFile {
         return view[1] * 0x100000000 + view[0];
     }
 
+    async readString(pos) {
+        const self = this;
+
+        let currentPosition = typeof pos == "undefined" ? self.pos : pos;
+
+        if (currentPosition > this.totalSize) {
+            if (this.readOnly) {
+                throw new Error("Reading out of bounds");
+            }
+            this._resizeIfNeeded(pos);
+        }
+        const dataArray = new Uint8Array(
+            self.o.data.buffer,
+            currentPosition,
+            this.totalSize - currentPosition
+        );
+
+        let indexEndOfString = dataArray.findIndex(element => element === 0);
+        let endOfStringFound = indexEndOfString !== -1;
+
+        let str = "";
+        if (endOfStringFound) {
+            str = new TextDecoder().decode(dataArray.slice(0, indexEndOfString));
+            self.pos = currentPosition + indexEndOfString + 1;
+        } else {
+            self.pos = currentPosition;
+        }
+        return str;
+    }
 }
 
 const PAGE_SIZE = 1<<22;
@@ -772,6 +852,48 @@ class BigMemFile {
         return view[1] * 0x100000000 + view[0];
     }
 
+    async readString(pos) {
+        const self = this;
+        const fixedSize = 2048;
+
+        let currentPosition = typeof pos == "undefined" ? self.pos : pos;
+
+        if (currentPosition > this.totalSize) {
+            if (this.readOnly) {
+                throw new Error("Reading out of bounds");
+            }
+            this._resizeIfNeeded(pos);
+        }
+
+        let endOfStringFound = false;
+        let str = "";
+
+        while (!endOfStringFound) {
+            let currentPage = Math.floor(currentPosition / PAGE_SIZE);
+            let offsetOnPage = currentPosition % PAGE_SIZE;
+
+            if (self.o.data[currentPage] === undefined) {
+                throw new Error("ERROR");
+            }
+
+            let readLength = Math.min(fixedSize, self.o.data[currentPage].length - offsetOnPage);
+            const dataArray = new Uint8Array(self.o.data[currentPage].buffer, offsetOnPage, readLength);
+
+            let indexEndOfString = dataArray.findIndex(element => element === 0);
+            endOfStringFound = indexEndOfString !== -1;
+
+            if (endOfStringFound) {
+                str += new TextDecoder().decode(dataArray.slice(0, indexEndOfString));
+                self.pos = currentPage * PAGE_SIZE + offsetOnPage + indexEndOfString + 1;
+            } else {
+                str += new TextDecoder().decode(dataArray);
+                self.pos = currentPage * PAGE_SIZE + offsetOnPage + dataArray.length;
+            }
+
+            currentPosition = self.pos;
+        }
+        return str;
+    }
 }
 
 /* global fetch */
@@ -790,7 +912,7 @@ async function createOverride(o, b, c) {
         };
     }
     if (o.type == "file") {
-        return await open(o.fileName, "w+", o.cacheSize, o.pageSize);
+        return await open(o.fileName, constants.O_TRUNC | constants.O_CREAT | constants.O_RDWR, o.cacheSize, o.pageSize);
     } else if (o.type == "mem") {
         return createNew(o);
     } else if (o.type == "bigMem") {
@@ -810,7 +932,7 @@ function createNoOverride(o, b, c) {
         };
     }
     if (o.type == "file") {
-        return open(o.fileName, "wx+", o.cacheSize, o.pageSize);
+        return open(o.fileName, constants.O_TRUNC | constants.O_CREAT | constants.O_RDWR | constants.O_EXCL, o.cacheSize, o.pageSize);
     } else if (o.type == "mem") {
         return createNew(o);
     } else if (o.type == "bigMem") {
@@ -850,7 +972,7 @@ async function readExisting$2(o, b, c) {
         }
     }
     if (o.type == "file") {
-        return await open(o.fileName, "r", o.cacheSize, o.pageSize);
+        return await open(o.fileName, constants.O_RDONLY, o.cacheSize, o.pageSize);
     } else if (o.type == "mem") {
         return await readExisting(o);
     } else if (o.type == "bigMem") {
@@ -870,7 +992,7 @@ function readWriteExisting$2(o, b, c) {
         };
     }
     if (o.type == "file") {
-        return open(o.fileName, "a+", o.cacheSize, o.pageSize);
+        return open(o.fileName, constants.O_CREAT | constants.O_RDWR, o.cacheSize, o.pageSize);
     } else if (o.type == "mem") {
         return readWriteExisting(o);
     } else if (o.type == "bigMem") {
@@ -890,7 +1012,7 @@ function readWriteExistingOrCreate(o, b, c) {
         };
     }
     if (o.type == "file") {
-        return open(o.fileName, "ax+", o.cacheSize);
+        return open(o.fileName, constants.O_CREAT | constants.O_RDWR | constants.O_EXCL, o.cacheSize);
     } else if (o.type == "mem") {
         return readWriteExisting(o);
     } else if (o.type == "bigMem") {

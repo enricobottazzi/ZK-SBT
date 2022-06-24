@@ -1,4 +1,4 @@
-# binutils
+# @iden3/binfileutils
 
 Utility to work with binary files
 

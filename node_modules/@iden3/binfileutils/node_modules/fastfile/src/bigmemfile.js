@@ -183,4 +183,46 @@ class BigMemFile {
         return view[1] * 0x100000000 + view[0];
     }
 
+    async readString(pos) {
+        const self = this;
+        const fixedSize = 2048;
+
+        let currentPosition = typeof pos == "undefined" ? self.pos : pos;
+
+        if (currentPosition > this.totalSize) {
+            if (this.readOnly) {
+                throw new Error("Reading out of bounds");
+            }
+            this._resizeIfNeeded(pos);
+        }
+
+        let endOfStringFound = false;
+        let str = "";
+
+        while (!endOfStringFound) {
+            let currentPage = Math.floor(currentPosition / PAGE_SIZE);
+            let offsetOnPage = currentPosition % PAGE_SIZE;
+
+            if (self.o.data[currentPage] === undefined) {
+                throw new Error("ERROR");
+            }
+
+            let readLength = Math.min(fixedSize, self.o.data[currentPage].length - offsetOnPage);
+            const dataArray = new Uint8Array(self.o.data[currentPage].buffer, offsetOnPage, readLength);
+
+            let indexEndOfString = dataArray.findIndex(element => element === 0);
+            endOfStringFound = indexEndOfString !== -1;
+
+            if (endOfStringFound) {
+                str += new TextDecoder().decode(dataArray.slice(0, indexEndOfString));
+                self.pos = currentPage * PAGE_SIZE + offsetOnPage + indexEndOfString + 1;
+            } else {
+                str += new TextDecoder().decode(dataArray);
+                self.pos = currentPage * PAGE_SIZE + offsetOnPage + dataArray.length;
+            }
+
+            currentPosition = self.pos;
+        }
+        return str;
+    }
 }

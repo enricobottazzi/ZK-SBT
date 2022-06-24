@@ -5,9 +5,29 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var ffjavascript = require('ffjavascript');
 var fastFile = require('fastfile');
 
+function _interopNamespace(e) {
+    if (e && e.__esModule) return e;
+    var n = Object.create(null);
+    if (e) {
+        Object.keys(e).forEach(function (k) {
+            if (k !== 'default') {
+                var d = Object.getOwnPropertyDescriptor(e, k);
+                Object.defineProperty(n, k, d.get ? d : {
+                    enumerable: true,
+                    get: function () { return e[k]; }
+                });
+            }
+        });
+    }
+    n["default"] = e;
+    return Object.freeze(n);
+}
+
+var fastFile__namespace = /*#__PURE__*/_interopNamespace(fastFile);
+
 async function readBinFile(fileName, type, maxVersion, cacheSize, pageSize) {
 
-    const fd = await fastFile.readExisting(fileName, cacheSize, pageSize);
+    const fd = await fastFile__namespace.readExisting(fileName, cacheSize, pageSize);
 
     const b = await fd.read(4);
     let readedType = "";
@@ -39,7 +59,7 @@ async function readBinFile(fileName, type, maxVersion, cacheSize, pageSize) {
 
 async function createBinFile(fileName, type, version, nSections, cacheSize, pageSize) {
 
-    const fd = await fastFile.createOverride(fileName, cacheSize, pageSize);
+    const fd = await fastFile__namespace.createOverride(fileName, cacheSize, pageSize);
 
     const buff = new Uint8Array(4);
     for (let i=0; i<4; i++) buff[i] = type.charCodeAt(i);

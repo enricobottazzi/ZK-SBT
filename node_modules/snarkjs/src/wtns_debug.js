@@ -22,8 +22,13 @@ import { WitnessCalculatorBuilder } from "circom_runtime";
 import * as wtnsUtils from "./wtns_utils.js";
 import * as binFileUtils from "@iden3/binfileutils";
 import loadSyms from "./loadsyms.js";
+import {  utils }   from "ffjavascript";
+const {unstringifyBigInts} = utils;
 
-export default async function wtnsDebug(input, wasmFileName, wtnsFileName, symName, options, logger) {
+
+export default async function wtnsDebug(_input, wasmFileName, wtnsFileName, symName, options, logger) {
+
+    const input = unstringifyBigInts(_input);
 
     const fdWasm = await fastFile.readExisting(wasmFileName);
     const wasm = await fdWasm.read(fdWasm.totalSize);
@@ -37,13 +42,15 @@ export default async function wtnsDebug(input, wasmFileName, wtnsFileName, symNa
     if (options.set) {
         if (!sym) sym = await loadSyms(symName);
         wcOps.logSetSignal= function(labelIdx, value) {
-            if (logger) logger.info("SET " + sym.labelIdx2Name[labelIdx] + " <-- " + value.toString());
+            // The line below splits the arrow log into 2 strings to avoid some Secure ECMAScript issues
+            if (logger) logger.info("SET " + sym.labelIdx2Name[labelIdx] + " <" + "-- " + value.toString());
         };
     }
     if (options.get) {
         if (!sym) sym = await loadSyms(symName);
         wcOps.logGetSignal= function(varIdx, value) {
-            if (logger) logger.info("GET " + sym.labelIdx2Name[varIdx] + " --> " + value.toString());
+            // The line below splits the arrow log into 2 strings to avoid some Secure ECMAScript issues
+            if (logger) logger.info("GET " + sym.labelIdx2Name[varIdx] + " --" + "> " + value.toString());
         };
     }
     if (options.trigger) {
