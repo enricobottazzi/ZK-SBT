@@ -5,7 +5,7 @@ pragma solidity ^0.8.11;
 /// @author Enrico Bottazzi
 /// @notice Verify attribute of a claim with ZKP and, if verified, execute logic.
 
-interface IPlonkVerifier {
+interface IVerifier {
     function verifyProof(uint[2] memory a,
             uint[2][2] memory b,
             uint[2] memory c,
@@ -21,13 +21,13 @@ interface IPrivateSoulMinter {
 /// @title An example airdrop contract utilizing zk-proof for claim's attributes verification.
 contract PrivateOver18Airdrop {
 
-    IPlonkVerifier verifier;
+    IVerifier verifier;
     IPrivateSoulMinter privateSoulMinter;
 
     mapping(address => bool) public isElegibleForAirdrop;
 
     constructor(
-        IPlonkVerifier _verifier,
+        IVerifier _verifier,
         IPrivateSoulMinter _privateSoulMinter
     ) {
         verifier = _verifier;
