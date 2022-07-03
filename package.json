@@ -26,6 +26,7 @@
     "snarkjs": "^0.4.22"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "hardhat": "^2.9.7"
   }
 }
