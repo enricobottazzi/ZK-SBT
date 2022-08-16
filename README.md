@@ -2,7 +2,7 @@
 
 One of the major concerns with SBTs presented in the Decentralized Society [paper](https://vitalik.ca/general/2022/01/26/soulbound.html) (Glen Wely, Puja Ohlhaver, and Vitalik Buterin) and [article](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763) (Vitalik Buterin) has been the assumption that SBTs contain public data on-chain. This assumption has stirred a lot of debate in the Web3 community with what technical substrate to be leveraging in order to represent the key outcomes from the Decentralized Society paper (Verifiable Credentials or assumed technical specs of an SBT).  
 
-As Vitalik Buterin has mentioned [publicly](https://twitter.com/VitalikButerin/status/1530265766032838656?s=20&t=hNyxz5KEaL1cW5crxj01Rw) "I think the optimal technical solution [to represent identity related information] includes both a chain and off-chain data and ZKPs over both". Not only Vitalik, but many thought leaders in the VC and Web3 native communities have agreed that the solution is not binary, but a pluralistic one. 
+As Vitalik Buterin has mentioned [publicly](https://twitter.com/VitalikButerin/status/1530265766032838656?s=20&t=hNyxz5KEaL1cW5crxj01Rw) "I think the optimal technical solution [to represent identity related information] includes both on-chain and off-chain data and ZKPs over both". Not only Vitalik, but many thought leaders in the VC and Web3 native communities have agreed that the solution is not binary, but a pluralistic one. 
 
 The key design considerations we took included: portability; provisioned privacy; efficient storage; and composability with Web3 developers. 
 
@@ -57,7 +57,7 @@ Value:
 
 The data structure used to represent a claim on-chain is a non-transferable ERC721 [`PrivateSoulMinter`](./contracts/PrivateSoulMinter.sol)
 
-- The ZK SBT contains an hash of the signed claim. This is the only information related to the claim stored on-chain.
+- The ZK SBT contains a hash of the signed claim. This is the only information related to the claim stored on-chain.
 - The ZK SBT is minted by the issuer smart contract to the claim receiver 
 
 ### ZKP Generation and Verification
@@ -66,7 +66,7 @@ Smart contracts can make query to someone's claim and verify the query inside a 
 
 In this example, the smart contract that gives access to an airdrop only to people that prove being over 18 [`PrivateOver18Airdrop`](./contracts/PrivateOver18Aidrop.sol).
 
-The query, on a elementary level, looks like this: 
+The query, on an elementary level, looks like this: 
 
 ```
     SlotIndex: 2,  // Position inside the claim of the queried value
@@ -102,7 +102,7 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
     npx hardhat run scripts/deploy.js --network mumbai
     ```
 
--  Mint a SBT that includes an hash of the signature of the claim to the claim's receiver
+-  Mint an SBT that includes a hash of the signature of the claim to the claim's receiver
 
     ```bash
     npx hardhat run scripts/mint.js --network mumbai
