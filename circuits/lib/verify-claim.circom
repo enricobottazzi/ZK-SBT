@@ -20,6 +20,9 @@ signal input slotIndex;
 signal input operator;
 signal input value[valueArraySize];
 
+//outsignal
+signal output out;
+
 // verify signature 
 component signature = verifyClaimSignature();
 
@@ -38,5 +41,5 @@ query.slotIndex <== slotIndex;
 query.operator <== operator;
 for(var i = 0; i<valueArraySize; i++){query.value[i] <== value[i];}
 
-
+out <== query.out;
 }
