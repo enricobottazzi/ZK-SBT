@@ -20,7 +20,7 @@ signal input slotIndex;
 signal input operator;
 signal input value[valueArraySize];
 
-//outsignal
+//out signal
 signal output out;
 
 // verify signature 
