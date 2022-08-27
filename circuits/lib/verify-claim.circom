@@ -14,14 +14,14 @@ signal input sigS;
 signal input pubKeyX;
 signal input pubKeyY;
 
+// out signal
+signal output out;
+
 /** Query */
 signal input claimSchema;
 signal input slotIndex;
 signal input operator;
 signal input value[valueArraySize];
-
-//out signal
-signal output out;
 
 // verify signature 
 component signature = verifyClaimSignature();

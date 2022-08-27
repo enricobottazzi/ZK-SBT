@@ -13,7 +13,7 @@ template checkQuery(valueArraySize) {
     signal input operator;
     signal input value[valueArraySize];
 
-    //out signal 
+    //out signal
     signal output out;
 
     // Verify issuerClaim schema
@@ -33,5 +33,6 @@ template checkQuery(valueArraySize) {
     q.in <== getClaimValue.value;
     q.operator <== operator;
     for(var i = 0; i<valueArraySize; i++){q.value[i] <== value[i];}
+    
     out <== q.out;
 }
