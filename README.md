@@ -124,7 +124,11 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
 
 ### Test
 
-`mocha` to test the contract and the circuit
+- To Test the contract and the circuit
+
+    ```bash
+    npx hardhat test
+    ```
 
 ### Front-end
 
