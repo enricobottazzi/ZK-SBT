@@ -13,6 +13,9 @@ template checkQuery(valueArraySize) {
     signal input operator;
     signal input value[valueArraySize];
 
+    //out signal
+    signal output out;
+
     // Verify issuerClaim schema
     component claimSchemaCheck = verifyCredentialSchema();
     for (var i=0; i<8; i++) { claimSchemaCheck.claim[i] <== issuerClaim[i]; }
@@ -30,5 +33,6 @@ template checkQuery(valueArraySize) {
     q.in <== getClaimValue.value;
     q.operator <== operator;
     for(var i = 0; i<valueArraySize; i++){q.value[i] <== value[i];}
-    q.out === 1;
+    
+    out <== q.out;
 }

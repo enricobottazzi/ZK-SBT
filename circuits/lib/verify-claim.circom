@@ -14,6 +14,9 @@ signal input sigS;
 signal input pubKeyX;
 signal input pubKeyY;
 
+// out signal
+signal output out;
+
 /** Query */
 signal input claimSchema;
 signal input slotIndex;
@@ -38,5 +41,5 @@ query.slotIndex <== slotIndex;
 query.operator <== operator;
 for(var i = 0; i<valueArraySize; i++){query.value[i] <== value[i];}
 
-
+out <== query.out;
 }

@@ -12,7 +12,7 @@ async function main() {
     let a = ["", ""]
     let b = [["", ""],["", ""]]
     let c = ["", ""]
-    // input[72] represents the public input of the circuit
+    // input[73] represents the public input of the circuit
     let input = [""] 
     let tokenID = "1"; // to add
 
