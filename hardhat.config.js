@@ -8,11 +8,11 @@ module.exports = {
   networks: {
     mumbai: {
       url: `${process.env.ALCHEMY_MUMBAI_URL}`,
-      accounts: [`0x${process.env.MUMBAI_PRIVATE_KEY1}`, `0x${process.env.MUMBAI_PRIVATE_KEY2}` ]
+      accounts: [`0x${process.env.MUMBAI_PRIVATE_KEY2}`, `0x${process.env.MUMBAI_PRIVATE_KEY8}` ]
     },
     goerli: {
       url: `${process.env.ALCHEMY_GOERLI_URL}`,
-      accounts: [`0x${process.env.MUMBAI_PRIVATE_KEY1}`, `0x${process.env.MUMBAI_PRIVATE_KEY2}` ]
+      accounts: [`0x${process.env.MUMBAI_PRIVATE_KEY2}`, `0x${process.env.MUMBAI_PRIVATE_KEY8}` ]
     } 
   },
   etherscan: {
