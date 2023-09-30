@@ -101,10 +101,10 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
     ```
     npx hardhat run scripts/deploy.js --network mumbai
     ```
-  You will get an output like this: 
-    `Soul Minter address:` 0xabcd......
-    `Verifier contract address:` 0x1234....
-    `PrivateOver18Airdrop contract address:` 0xfoobar....
+     - You will get an output like this: 
+        - `Soul Minter address:` 0xabcd......
+        - `Verifier contract address:` 0x1234....
+        - `PrivateOver18Airdrop contract address:` 0xfoobar....
 
   Navigate inside [`mint.js`](scripts/mint.js) paste your output of `Soul Minter address` and also `sigR8x`, `sigR8y`, `sigS` which can be found on [`input.json`](build/verify/verify_js/input.json)
     
@@ -122,11 +122,11 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
 
       The output you get from this command represent the solidity calldata needed to verify the proof
    
-      Zk-SNARK proof and public inputs you’ve generated should be structured as follows:
-       - `a:` This is the initial element of your array, which itself is an array comprising two strings. 
-       - `b:` This is the second element of your array, which is an array of two sub-arrays, each containing two strings.
-       - `c:` This is the third element of your array, which is another array of two strings.
-       - `input:` This is the fourth element of your array, which is a lengthy array of strings
+     - Zk-SNARK proof and public inputs you’ve generated should be structured as follows:
+           - `a:` This is the initial element of your array, which itself is an array comprising two strings. 
+           - `b:` This is the second element of your array, which is an array of two sub-arrays, each containing two strings.
+           - `c:` This is the third element of your array, which is another array of two strings.
+           - `input:` This is the fourth element of your array, which is a lengthy array of strings
 
       Please replace your [`verify.js`](scripts/verify.js) with output array and the `PrivateOver18Airdrop` contract address along with `tokenID`. 
 
