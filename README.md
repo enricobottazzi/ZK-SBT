@@ -106,7 +106,7 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
      - `Verifier contract address:` 0x1234....
      - `PrivateOver18Airdrop contract address:` 0xfoobar....
 
-  Navigate inside [`mint.js`](scripts/mint.js) paste your output of `Soul Minter address` and also `sigR8x`, `sigR8y`, `sigS` which can be found on [`input.json`](build/verify/verify_js/input.json)
+      Navigate inside [`mint.js`](scripts/mint.js) paste your output of `Soul Minter address` and also `sigR8x`, `sigR8y`, `sigS` which can be found on [`input.json`](build/verify/verify_js/input.json)
     
 -  Mint an SBT that includes a hash of the signature of the claim to the claim's receiver
 
