@@ -126,7 +126,7 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
     - `a:` This is the initial element of your array, which itself is an array comprising two strings.
     - `b:` This is the second element of your array, which is an array of two sub-arrays, each containing two strings.
     - `c:` This is the third element of your array, which is another array of two strings.
-    - `input:` This is the fourth element of your array, which is a lengthy array of strings
+    - `input:` This is the fourth element of your array, which is a lengthy array of strings.
 
   Please replace your [`verify.js`](scripts/verify.js) with output array and the `PrivateOver18Airdrop` contract address along with `tokenID`. 
 
