@@ -101,7 +101,8 @@ The circuits have been pre-compiled using the `powersOfTau28_hez_final_15.ptau`t
     ```
     npx hardhat run scripts/deploy.js --network mumbai
     ```
- - You will get an output like this: 
+ - You will get an output like this:
+   
        - `Soul Minter address:` 0xabcd......
        - `Verifier contract address:` 0x1234....
        - `PrivateOver18Airdrop contract address:` 0xfoobar....
